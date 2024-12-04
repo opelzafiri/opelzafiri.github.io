@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weapon Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .result-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weapon Search</h1>
+    <input type="text" id="query" placeholder="Enter weapon name...">
+    <button onclick="searchWeapons()">Search</button>
+    <div class="results" id="results"></div>
+
+    <script>
+        const API_URL = "https://raw.githubusercontent.com/opelzafiri/d2ArtArrangements/refs/heads/main/output.json";
+        const WEAPON_TYPES = [
+            "Auto Rifle", "Combat Bow", "Fusion Rifle", "Glaive",
+            "Grenade Launcher", "Hand Cannon", "Linear Fusion Rifle",
+            "Machine Gun", "Pulse Rifle", "Rocket Launcher", "Scout Rifle",
+            "Shotgun", "Sidearm", "Sniper Rifle", "Submachine Gun",
+            "Sword", "Trace Rifle"
+        ];
+
+        let data = [];
+
+        // Fetch the data from the API
+        async function fetchData() {
+            try {
+                const response = await fetch(API_URL);
+                data = await response.json();
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        // Filter and display results
+        function searchWeapons() {
+            const query = document.getElementById("query").value.toLowerCase();
+            const results = data.filter(item => 
+                item.Name.toLowerCase().includes(query) && WEAPON_TYPES.includes(item.Type)
+            );
+
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = "";
+
+            if (results.length > 0) {
+                results.forEach(result => {
+                    const div = document.createElement("div");
+                    div.className = "result-item";
+                    div.innerHTML = `
+                        <strong>Name:</strong> ${result.Name}<br>
+                        <strong>Type:</strong> ${result.Type}<br>
+                        <strong>Hash:</strong> ${result.InventoryItemHash}<br>
+                        <strong>ArtArrangementIndex:</strong> ${result.ArtArrangementIndex}
+                    `;
+                    resultsDiv.appendChild(div);
+                });
+            } else {
+                resultsDiv.innerHTML = `<p>No results found for "${query}".</p>`;
+            }
+        }
+
+        // Initialize
+        fetchData();
+    </script>
+</body>
+</html>
