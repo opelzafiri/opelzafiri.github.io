@@ -1,103 +1,155 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Weapon Search</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }
-            h1 {
-                color: #333;
-            }
-            input[type="text"] {
-                padding: 8px;
-                width: 300px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            }
-            button {
-                padding: 8px 16px;
-                background-color: #007BFF;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            button:hover {
-                background-color: #0056b3;
-            }
-            .results {
-                margin-top: 20px;
-            }
-            .result-item {
-                margin-bottom: 10px;
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                background-color: #f9f9f9;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Weapon Search</h1>
-        <input type="text" id="query" placeholder="Enter weapon name...">
-        <button onclick="searchWeapons()">Search</button>
-        <div class="results" id="results"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Search</title>
+    <style>
+        :root {
+            --background-color: #ffffff;
+            --text-color: #000000;
+            --input-border-color: #ccc;
+            --button-bg-color: #007BFF;
+            --button-hover-bg-color: #0056b3;
+            --result-bg-color: #f9f9f9;
+        }
 
-        <script>
-            const API_URL = "https://raw.githubusercontent.com/opelzafiri/d2ArtArrangements/refs/heads/main/output.json";
-            const WEAPON_TYPES = [
-                "Auto Rifle", "Combat Bow", "Fusion Rifle", "Glaive",
-                "Grenade Launcher", "Hand Cannon", "Linear Fusion Rifle",
-                "Machine Gun", "Pulse Rifle", "Rocket Launcher", "Scout Rifle",
-                "Shotgun", "Sidearm", "Sniper Rifle", "Submachine Gun",
-                "Sword", "Trace Rifle"
-            ];
+        [data-theme="dark"] {
+            --background-color: #121212;
+            --text-color: #ffffff;
+            --input-border-color: #555;
+            --button-bg-color: #4444ff;
+            --button-hover-bg-color: #2222aa;
+            --result-bg-color: #1e1e1e;
+        }
 
-            let data = [];
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
 
+        h1 {
+            color: var(--text-color);
+        }
 
-            async function fetchData() {
-                try {
-                    const response = await fetch(API_URL);
-                    data = await response.json();
-                } catch (error) {
-                    console.error("Error fetching data:", error);
-                }
+        input[type="text"], select {
+            padding: 8px;
+            width: 300px;
+            border: 1px solid var(--input-border-color);
+            border-radius: 4px;
+            margin-right: 10px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: var(--button-bg-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: var(--button-hover-bg-color);
+        }
+
+        .dark-mode-toggle {
+            margin-bottom: 20px;
+        }
+
+        .results {
+            margin-top: 20px;
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid var(--input-border-color);
+            border-radius: 4px;
+            background-color: var(--result-bg-color);
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <h1>Item Search</h1>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    <input type="text" id="query" placeholder="Enter item name...">
+    <select id="categoryFilter">
+        <option value="all">All Items</option>
+        <option value="weapons">Weapons Only</option>
+    </select>
+    <button onclick="searchItems()">Search</button>
+    <div class="results" id="results"></div>
+
+    <script>
+        const API_URL = "https://raw.githubusercontent.com/opelzafiri/d2ArtArrangements/refs/heads/main/output.json";
+        const WEAPON_TYPES = [
+            "Auto Rifle", "Combat Bow", "Fusion Rifle", "Glaive",
+            "Grenade Launcher", "Hand Cannon", "Linear Fusion Rifle",
+            "Machine Gun", "Pulse Rifle", "Rocket Launcher", "Scout Rifle",
+            "Shotgun", "Sidearm", "Sniper Rifle", "Submachine Gun",
+            "Sword", "Trace Rifle","Weapon Ornament"
+        ];
+
+        let data = [];
+
+        async function fetchData() {
+            try {
+                const response = await fetch(API_URL);
+                data = await response.json();
+            } catch (error) {
+                console.error("Error fetching data:", error);
             }
-        
-            function searchWeapons() {
-                const query = document.getElementById("query").value.toLowerCase();
-                const results = data.filter(item => 
-                    item.Name.toLowerCase().includes(query) && WEAPON_TYPES.includes(item.Type)
-                );
+        }
 
-                const resultsDiv = document.getElementById("results");
-                resultsDiv.innerHTML = "";
+        function searchItems() {
+            const query = document.getElementById("query").value.toLowerCase();
+            const categoryFilter = document.getElementById("categoryFilter").value;
 
-                if (results.length > 0) {
-                    results.forEach(result => {
-                        const div = document.createElement("div");
-                        div.className = "result-item";
-                        div.innerHTML = `
-                            <strong>Name:</strong> ${result.Name}<br>
-                            <strong>Type:</strong> ${result.Type}<br>
-                            <strong>Hash:</strong> ${result.InventoryItemHash}<br>
-                            <strong>ArtArrangementIndex:</strong> ${result.ArtArrangementIndex}<br>
-                            <strong>pattern:</strong> ${result.pattern}
-                        `;
-                        resultsDiv.appendChild(div);
-                    });
-                } else {
-                    resultsDiv.innerHTML = `<p>No results found for "${query}".</p>`;
-                }
+            const results = data.filter(item => {
+                const matchesQuery = item.Name.toLowerCase().includes(query);
+                const matchesCategory =
+                    categoryFilter === "all" || 
+                    (categoryFilter === "weapons" && WEAPON_TYPES.includes(item.Type));
+                return matchesQuery && matchesCategory;
+            });
+
+            displayResults(results, query);
+        }
+
+        function displayResults(results, query) {
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = "";
+
+            if (results.length > 0) {
+                results.forEach(result => {
+                    const div = document.createElement("div");
+                    div.className = "result-item";
+                    div.innerHTML = `
+                        <strong>Name:</strong> ${result.Name}<br>
+                        <strong>Type:</strong> ${result.Type || "Unknown"}<br>
+                        <strong>Hash:</strong> ${result.InventoryItemHash}<br>
+                        <strong>ArtArrangementIndex:</strong> ${result.ArtArrangementIndex}<br>
+                        <strong>Pattern:</strong> ${result.pattern || "None"}
+                    `;
+                    resultsDiv.appendChild(div);
+                });
+            } else {
+                resultsDiv.innerHTML = `<p>No results found for "${query}".</p>`;
             }
+        }
 
+        function toggleDarkMode() {
+            const currentTheme = document.body.getAttribute("data-theme");
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            document.body.setAttribute("data-theme", newTheme);
+        }
 
-            fetchData();
-        </script>
-    </body>
-    </html>
+        fetchData();
+    </script>
+</body>
+</html>
