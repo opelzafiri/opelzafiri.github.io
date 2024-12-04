@@ -25,9 +25,35 @@
 
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
             background-color: var(--background-color);
+            background-image: url('https://cdn.discordapp.com/attachments/1313426755394211870/1313994629108076655/asddsadasadasd.png?ex=6752285c&is=6750d6dc&hm=4ad8348476161a58cc5823ed3bbb9eeac7d41c60c73885660342df9df2b040a5&');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             color: var(--text-color);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        .top-right-text {
+            position: fixed; /* Sticks it to the top-right corner */
+            top: 20px; /* Adjust distance from the top */
+            right: 20px; /* Moves the text to the right side */
+            color: var(--text-color);
+            font-size: 24px; /* You can adjust the font size */
+            font-weight: bold;
+            z-index: 10; /* Ensure the text stays on top of other elements */
         }
 
         h1 {
@@ -75,8 +101,14 @@
     </style>
 </head>
 <body data-theme="dark">
+    <div class="overlay"></div>
+    <div class="top-right-text">
+        <a href="https://www.discord.gg/nalgini" target="_blank" style="color: #00FFFF;">discord.gg/nalgini</a>
+      </div>
+      
+      
     <h1>Item Search</h1>
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    <h3>dm opelzafiri on dc for help/issues</h3>
     <input type="text" id="query" placeholder="Enter item name...">
     <select id="categoryFilter">
         <option value="all">All Items</option>
@@ -129,7 +161,7 @@
                 results.forEach(result => {
                     const div = document.createElement("div");
                     div.className = "result-item";
-                    div.innerHTML = `
+                    div.innerHTML = `  
                         <strong>Name:</strong> ${result.Name}<br>
                         <strong>Type:</strong> ${result.Type || "Unknown"}<br>
                         <strong>Hash:</strong> ${result.InventoryItemHash}<br>
