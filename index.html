@@ -59,7 +59,7 @@
 
         let data = [];
 
-        // Fetch the data from the API
+
         async function fetchData() {
             try {
                 const response = await fetch(API_URL);
@@ -68,8 +68,7 @@
                 console.error("Error fetching data:", error);
             }
         }
-
-        // Filter and display results
+    
         function searchWeapons() {
             const query = document.getElementById("query").value.toLowerCase();
             const results = data.filter(item => 
@@ -87,7 +86,8 @@
                         <strong>Name:</strong> ${result.Name}<br>
                         <strong>Type:</strong> ${result.Type}<br>
                         <strong>Hash:</strong> ${result.InventoryItemHash}<br>
-                        <strong>ArtArrangementIndex:</strong> ${result.ArtArrangementIndex}
+                        <strong>ArtArrangementIndex:</strong> ${result.ArtArrangementIndex}<br>
+                        <strong>ArtArrangementIndex:</strong> ${result.pattern}
                     `;
                     resultsDiv.appendChild(div);
                 });
@@ -96,7 +96,7 @@
             }
         }
 
-        // Initialize
+
         fetchData();
     </script>
 </body>
