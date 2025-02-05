@@ -3,182 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Item Search</title>
+    <title>Destiny 2 Item Search</title>
     <style>
-        :root {
-            --background-color: #ffffff;
-            --text-color: #000000;
-            --input-border-color: #ccc;
-            --button-bg-color: #007BFF;
-            --button-hover-bg-color: #0056b3;
-            --result-bg-color: #f9f9f9;
-        }
-
-        [data-theme="dark"] {
-            --background-color: #121212;
-            --text-color: #ffffff;
-            --input-border-color: #555;
-            --button-bg-color: #4444ff;
-            --button-hover-bg-color: #2222aa;
-            --result-bg-color: #1e1e1e;
-        }
-
         body {
             font-family: Arial, sans-serif;
-            background-color: var(--background-color);
-            background-image: url('https://raw.githubusercontent.com/opelzafiri/opelzafiri.github.io/refs/heads/main/assets/bh.png');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: var(--text-color);
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-        }
-
-        .top-right-text {
-            position: fixed; /* Sticks it to the top-right corner */
-            top: 20px; /* Adjust distance from the top */
-            right: 20px; /* Moves the text to the right side */
-            color: var(--text-color);
-            font-size: 24px; /* You can adjust the font size */
-            font-weight: bold;
-            z-index: 10; /* Ensure the text stays on top of other elements */
-        }
-
-        h1 {
-            color: var(--text-color);
-        }
-
-        input[type="text"], select {
-            padding: 8px;
-            width: 300px;
-            border: 1px solid var(--input-border-color);
-            border-radius: 4px;
-            margin-right: 10px;
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-
-        button {
-            padding: 8px 16px;
-            background-color: var(--button-bg-color);
+            background-color: #121212;
             color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            text-align: center;
+            padding: 20px;
         }
-
-        button:hover {
-            background-color: var(--button-hover-bg-color);
+        input, select, button {
+            margin: 10px;
+            padding: 8px;
         }
-
-        .dark-mode-toggle {
-            margin-bottom: 20px;
-        }
-
-        .results {
-            margin-top: 20px;
-        }
-
         .result-item {
-            margin-bottom: 10px;
+            background-color: #1e1e1e;
             padding: 10px;
-            border: 1px solid var(--input-border-color);
-            border-radius: 4px;
-            background-color: var(--result-bg-color);
+            margin: 10px auto;
+            border-radius: 5px;
+            width: 50%;
+        }
+        img {
+            width: 50px;
+            height: 50px;
         }
     </style>
 </head>
-<body data-theme="dark">
-    <div class="overlay"></div>
-    <div class="top-right-text">
-        <a href="https://www.discord.gg/nalgini" target="_blank" style="color: #00FFFF;">w software @ .gg/nalgini</a>
-      </div>
-      
-      
-    <h1>Item Search</h1>
-    <h3>dm opelzafiri on dc for help/issues</h3>
-    <input type="text" id="query" placeholder="Enter item name...">
-    <select id="categoryFilter">
+<body>
+    <h1>Destiny 2 Item Search</h1>
+    <input type="text" id="query" placeholder="Enter item name..." oninput="searchItems()">
+    <select id="categoryFilter" onchange="searchItems()">
         <option value="all">All Items</option>
         <option value="weapons">Weapons Only</option>
+        <option value="armor">Armor Only</option>
+        <option value="emblems">Emblems</option>
+        <option value="sparrows">Sparrows</option>
+        <option value="ghosts">Ghosts</option>
+        <option value="ships">Ships</option>
+        <option value="perks">Perks</option>
+        <option value="weaponOrnaments">Weapon Ornaments</option>
+        <option value="finishers">Finishers</option>
     </select>
     <button onclick="searchItems()">Search</button>
-    <div class="results" id="results"></div>
+    <div id="results"></div>
 
     <script>
-        const API_URL = "https://raw.githubusercontent.com/opelzafiri/d2ArtArrangements/refs/heads/main/output.json";
-        const WEAPON_TYPES = [
-            "Auto Rifle", "Combat Bow", "Fusion Rifle", "Glaive",
-            "Grenade Launcher", "Hand Cannon", "Linear Fusion Rifle",
-            "Machine Gun", "Pulse Rifle", "Rocket Launcher", "Scout Rifle",
-            "Shotgun", "Sidearm", "Sniper Rifle", "Submachine Gun",
-            "Sword", "Trace Rifle","Weapon Ornament"
-        ];
-
-        let data = [];
+        let data = {};
 
         async function fetchData() {
             try {
-                const response = await fetch(API_URL);
+                const response = await fetch('./skibidiii.json');
                 data = await response.json();
             } catch (error) {
-                console.error("Error fetching data:", error);
+                console.error("Error loading data.json:", error);
             }
         }
 
         function searchItems() {
-            const query = document.getElementById("query").value.toLowerCase();
-            const categoryFilter = document.getElementById("categoryFilter").value;
-
-            const results = data.filter(item => {
-                const matchesQuery = item.Name.toLowerCase().includes(query);
-                const matchesCategory =
-                    categoryFilter === "all" || 
-                    (categoryFilter === "weapons" && WEAPON_TYPES.includes(item.Type));
-                return matchesQuery && matchesCategory;
-            });
-
-            displayResults(results, query);
-        }
-
-        function displayResults(results, query) {
+            const query = document.getElementById("query").value.toLowerCase().trim();
+            const category = document.getElementById("categoryFilter").value;
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = "";
 
-            if (results.length > 0) {
-                results.forEach(result => {
-                    const div = document.createElement("div");
-                    div.className = "result-item";
-                    div.innerHTML = `  
-                        <strong>Name:</strong> ${result.Name}<br>
-                        <strong>Type:</strong> ${result.Type || "Unknown"}<br>
-                        <strong>Hash:</strong> ${result.InventoryItemHash}<br>
-                        <strong>ArtArrangementIndex:</strong> ${result.ArtArrangementIndex}<br>
-                        <strong>Pattern:</strong> ${result.pattern || "None"}
-                    `;
-                    resultsDiv.appendChild(div);
-                });
-            } else {
+            if (query.length < 1) return;
+            
+            const filteredCategories = category === "all" ? Object.keys(data) : [category];
+            let foundResults = false;
+            
+            filteredCategories.forEach(categoryKey => {
+                if (data[categoryKey]) {
+                    Object.values(data[categoryKey]).forEach(item => {
+                        if (item.name.toLowerCase().includes(query)) {
+                            foundResults = true;
+                            const div = document.createElement("div");
+                            div.className = "result-item";
+                            div.innerHTML = `
+                                <img src="${item.icon}" alt="${item.name}"><br>
+                                <strong>${item.name}</strong><br>
+                                <em>Type: ${item.type || 'N/A'}</em><br>
+                                <span>Rarity: ${item.rarity}</span><br>
+                                <span>Model ID: ${item.model || 'Unknown'}</span><br>
+                                <span>Index ID: ${item.index || 'Unknown'}</span><br>
+                                <span>Hash: ${item.hash}</span>
+                            `;
+                            resultsDiv.appendChild(div);
+                        }
+                    });
+                }
+            });
+            
+            if (!foundResults) {
                 resultsDiv.innerHTML = `<p>No results found for "${query}".</p>`;
             }
-        }
-
-        function toggleDarkMode() {
-            const currentTheme = document.body.getAttribute("data-theme");
-            const newTheme = currentTheme === "dark" ? "light" : "dark";
-            document.body.setAttribute("data-theme", newTheme);
         }
 
         fetchData();
