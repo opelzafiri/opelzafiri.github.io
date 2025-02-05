@@ -18,6 +18,7 @@
       font-family: Arial, sans-serif;
       height: 100vh;
       overflow: hidden;
+      cursor: pointer; /* Change cursor to indicate interaction */
     }
     .container {
       display: flex;
@@ -26,16 +27,16 @@
       justify-content: center;
       background: rgba(30, 30, 47, 0.8);
       border-radius: 50%;
-      width: 370px;
-      height: 370px;
+      width: 450px; /* Increased size */
+      height: 450px; /* Increased size */
       padding: 20px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
       text-align: center;
     }
     img {
       border-radius: 50%;
-      width: 100px;
-      height: 100px;
+      width: 120px; /* Adjusted size */
+      height: 120px; /* Adjusted size */
       object-fit: cover;
       margin-bottom: 10px;
     }
@@ -44,6 +45,12 @@
       font-weight: 400;
       color: #ddd;
       margin-bottom: 15px;
+    }
+    .quote {
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 20px;
     }
     .buttons {
       display: flex;
@@ -113,11 +120,14 @@
 <body>
   <!-- Rounded Frame -->
   <div class="container">
+    <!-- Seek Allah Text -->
+    <p class="quote">Opelzafiri</p>
+
     <!-- Profile Picture -->
     <img src="https://raw.githubusercontent.com/opelzafiri/opelzafiri.github.io/refs/heads/main/assets/pfp.png" alt="Profile Picture">
 
     <!-- Profile Text -->
-    <p class="profile-text">Opelzafiri</p>
+    <p class="profile-text">Sabr</p>
 
     <!-- Buttons -->
     <div class="buttons">
@@ -135,7 +145,7 @@
     <!-- Custom Audio Player -->
     <div class="audio-player">
       <button id="play-pause"><i class="fas fa-play"></i></button>
-      <input id="seekbar" type="range" min="0" max="100" value="0">
+      <input id="seekbar" type="range" min="0" max="100" value="25"> <!-- Starts at 25% -->
       <button id="volume"><i class="fas fa-volume-up"></i></button>
     </div>
   </div>
@@ -147,6 +157,20 @@
     const volumeBtn = document.getElementById('volume');
 
     let isPlaying = false;
+    let hasClicked = false; // Flag to track first click
+
+    // Set the volume to 25% (0.25) initially
+    audio.volume = 0.25;
+
+    // Play audio when clicking anywhere on the page for the first time
+    document.body.addEventListener('click', () => {
+      if (!hasClicked) {
+        audio.play();
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        isPlaying = true;
+        hasClicked = true; // Set flag to true after the first click
+      }
+    });
 
     playPauseBtn.addEventListener('click', () => {
       if (isPlaying) {
