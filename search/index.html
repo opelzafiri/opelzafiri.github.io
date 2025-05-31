@@ -3,40 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
- <title>OPEL ZA GOAT SEARCH TOOL</title>
+  <title>OPEL ZA GOAT SEARCH TOOL</title>
   <link rel="icon" href="https://raw.githubusercontent.com/opelzafiri/opelzafiri.github.io/refs/heads/main/assets/pfp.png" type="image/png" />
-  
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  font-family: 'Inter', sans-serif;
-  background: url('https://i.pinimg.com/originals/f7/a2/90/f7a290493d271f48df30b1cdb5a8847c.gif') no-repeat center center;
-  background-size: cover;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: url('https://i.pinimg.com/originals/f7/a2/90/f7a290493d271f48df30b1cdb5a8847c.gif') no-repeat center center;
+      background-size: cover;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
 
-.container {
- background: rgba(20, 20, 35, 0.85);
-  border-radius: 24px;
-  padding: 30px 40px;
-  width: 420px;
-  max-width: 95vw;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
-  text-align: center;
-  transition: transform 0.3s ease;
-  background-repeat: no-repeat; 
-  background-size: auto;
-}
-  .container:hover {
-    transform: translateY(-5px);
-  }
+    .container {
+      background: rgba(20, 20, 35, 0.85);
+      border-radius: 24px;
+      padding: 30px 40px;
+      width: 420px;
+      max-width: 95vw;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      transition: transform 0.3s ease;
+      background-repeat: no-repeat; 
+      background-size: auto;
+    }
+    .container:hover {
+      transform: translateY(-5px);
+    }
 
     h1 {
       font-weight: 600;
@@ -114,13 +113,21 @@ body {
       background-color: #2e2e57;
     }
 
-    .result-item img {
+    .result-item a {
+      flex-shrink: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #6f9fff;
+      display: block;
       width: 60px;
       height: 60px;
-      border-radius: 12px;
+    }
+
+    .result-item img {
+      width: 100%;
+      height: 100%;
       object-fit: contain;
-      flex-shrink: 0;
-      border: 2px solid #6f9fff;
+      display: block;
     }
 
     .result-details {
@@ -160,6 +167,20 @@ body {
       margin-top: 30px;
       user-select: none;
     }
+    .result-details .extra-info {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  font-size: 0.85rem;
+  color: #a0a8c0;
+  margin-top: 6px;
+}
+
+.result-item:hover .result-details .extra-info {
+  max-height: 150px; /* enough to show the text */
+  opacity: 1;
+}
 
   </style>
 </head>
@@ -175,18 +196,7 @@ body {
       autocomplete="off"
       spellcheck="false"
     />
-    <select id="categoryFilter" onchange="searchItems()" aria-label="Filter by category">
-      <option value="all">All Items</option>
-      <option value="weapons">Weapons Only</option>
-      <option value="armor">Armor Only</option>
-      <option value="emblems">Emblems</option>
-      <option value="sparrows">Sparrows</option>
-      <option value="ghosts">Ghosts</option>
-      <option value="ships">Ships</option>
-      <option value="perks">Perks</option>
-      <option value="weaponOrnaments">Weapon Ornaments</option>
-      <option value="finishers">Finishers</option>
-    </select>
+  
     <button onclick="searchItems()" aria-label="Perform search">Search</button>
 
     <div id="results" aria-live="polite" aria-atomic="true"></div>
@@ -204,65 +214,64 @@ body {
       }
     }
 
-let debounceTimeout;
+    let debounceTimeout;
 
-function searchItems() {
-  clearTimeout(debounceTimeout);
-  debounceTimeout = setTimeout(() => {
-    const query = document.getElementById("query").value.toLowerCase().trim();
-    const category = document.getElementById("categoryFilter").value;
-    const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = "";
+    function searchItems() {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        const query = document.getElementById("query").value.toLowerCase().trim();
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "";
 
-    if (query.length < 1) return;
+        if (query.length < 1) return;
+        const items = Object.values(data);
 
-    const filteredCategories = category === "all" ? Object.keys(data) : [category];
+        const maxResults = 50;
+        let resultCount = 0;
+        const fragment = document.createDocumentFragment();
 
-    let foundResults = false;
-    const fragment = document.createDocumentFragment();
-    const maxResults = 50;
-    let resultCount = 0;
+        for (const item of items) {
+          if (!item._lowerName) {
+            item._lowerName = item.name.toLowerCase();
+          }
+          if (item._lowerName.includes(query)) {
+            resultCount++;
 
-    for (const categoryKey of filteredCategories) {
-      if (!data[categoryKey]) continue;
-      const items = Object.values(data[categoryKey]);
-      for (const item of items) {
-        if (!item._lowerName) {
-          item._lowerName = item.name.toLowerCase();
+            const div = document.createElement("div");
+            div.className = "result-item";
+div.innerHTML = `
+  <a href="https://bungie.net${item.icon}" target="_blank" rel="noopener noreferrer" aria-label="Open image of ${item.name}">
+    <img src="https://bungie.net${item.icon}" alt="${item.name}" />
+  </a>
+  <div class="result-details">
+    <strong>${item.name}</strong>
+    <span>Type: ${item.Type || 'Unknown'}</span>
+    <div class="extra-info">
+      <p><strong>Art Arrangement:</strong> ${item.ArtArrangementIndex || 'N/A'}</p>
+      <p><strong>Pattern:</strong> ${item.patternIndex || 'N/A'}</p>
+    </div>
+  </div>
+`;
+
+            fragment.appendChild(div);
+
+            if (resultCount >= maxResults) break;
+          }
         }
-        if (item._lowerName.includes(query)) {
-          foundResults = true;
-          resultCount++;
 
-          const div = document.createElement("div");
-          div.className = "result-item";
-          div.innerHTML = `
-            <img src="${item.icon}" alt="${item.name}"><br>
-            <strong>${item.name}</strong><br>  
-            <span>Model ID: ${item.model || 'Unknown'}</span><br>
-            <span>Index ID: ${item.index || 'Unknown'}</span><br>
-          `;
-          fragment.appendChild(div);
-
-          if (resultCount >= maxResults) break; 
+        if (resultCount > 0) {
+          resultsDiv.appendChild(fragment);
+          if (resultCount >= maxResults) {
+            const moreMsg = document.createElement("p");
+            moreMsg.style.fontStyle = "italic";
+            moreMsg.textContent = `Showing first ${maxResults} results. Narrow your search for more specific results.`;
+            resultsDiv.appendChild(moreMsg);
+          }
+        } else {
+          resultsDiv.innerHTML = `<p class="no-results">No results found for "${query}".</p>`;
         }
-      }
-      if (resultCount >= maxResults) break;
+      }, 250);
     }
-
-    if (foundResults) {
-      resultsDiv.appendChild(fragment);
-      if (resultCount >= maxResults) {
-        const moreMsg = document.createElement("p");
-        moreMsg.style.fontStyle = "italic";
-        moreMsg.textContent = `Showing first ${maxResults} results. Narrow your search for more specific results.`;
-        resultsDiv.appendChild(moreMsg);
-      }
-    } else {
-      resultsDiv.innerHTML = `<p>No results found for "${query}".</p>`;
-    }
-  }, 250);
-}
 
     fetchData();
   </script>
