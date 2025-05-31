@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
- <title>OPEL ZA GOAT SEARCH TOOL</title>
+  <title>OPEL ZA GOAT SEARCH TOOL</title>
   <link rel="icon" href="https://raw.githubusercontent.com/opelzafiri/opelzafiri.github.io/refs/heads/main/assets/pfp.png" type="image/png" />
-  
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
 body {
@@ -23,144 +22,163 @@ body {
 }
 
 .container {
- background: rgba(20, 20, 35, 0.85);
+  background: rgba(20, 20, 35, 0.85);
   border-radius: 24px;
   padding: 30px 40px;
   width: 420px;
   max-width: 95vw;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
   text-align: center;
-  transition: transform 0.3s ease;
-  background-repeat: no-repeat; 
-  background-size: auto;
+  position: relative;
 }
-  .container:hover {
-    transform: translateY(-5px);
-  }
 
-    h1 {
-      font-weight: 600;
-      margin-bottom: 25px;
-      font-size: 1.8rem;
-      letter-spacing: 1.2px;
-    }
+.container:hover {
+  transform: translateY(-5px);
+}
 
-    input[type="text"], select, button {
-      width: 100%;
-      padding: 12px 15px;
-      margin-bottom: 15px;
-      border-radius: 12px;
-      border: none;
-      background: #2a2a3a;
-      color: white;
-      font-size: 1rem;
-      transition: background-color 0.25s ease;
-      outline-offset: 2px;
-      outline-color: transparent;
-      cursor: pointer;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-    }
+h1 {
+  font-weight: 600;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  letter-spacing: 1.2px;
+}
 
-    input[type="text"]:focus, select:focus, button:focus {
-      outline-color: #6f9fff;
-      background-color: #394170;
-    }
+input[type="text"], select, button {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  border: none;
+  background: #2a2a3a;
+  color: white;
+  font-size: 1rem;
+  transition: background-color 0.25s ease;
+  outline-offset: 2px;
+  outline-color: transparent;
+  cursor: pointer;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+}
 
-    button {
-      background: #6f9fff;
-      font-weight: 600;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.3s ease;
-    }
+input[type="text"]:focus, select:focus, button:focus {
+  outline-color: #6f9fff;
+  background-color: #394170;
+}
 
-    button:hover {
-      background: #527ddd;
-    }
+button {
+  background: #6f9fff;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
 
-    #results {
-      margin-top: 25px;
-      max-height: 400px;
-      overflow-y: auto;
-    }
-    #results::-webkit-scrollbar {
-      width: 8px;
-    }
-    #results::-webkit-scrollbar-track {
-      background: rgba(40,40,60,0.2);
-      border-radius: 10px;
-    }
-    #results::-webkit-scrollbar-thumb {
-      background: #6f9fff;
-      border-radius: 10px;
-    }
+button:hover {
+  background: #527ddd;
+}
 
-    .result-item {
-      background-color: #1e1e38;
-      padding: 15px 20px;
-      margin-bottom: 15px;
-      border-radius: 15px;
-      text-align: left;
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      box-shadow: 0 4px 8px rgba(50, 60, 110, 0.5);
-      transition: background-color 0.25s ease;
-    }
+#results {
+  margin-top: 25px;
+  max-height: 400px;
+  overflow-y: auto;
+}
 
-    .result-item:hover {
-      background-color: #2e2e57;
-    }
+#results::-webkit-scrollbar {
+  width: 8px;
+}
+#results::-webkit-scrollbar-track {
+  background: rgba(40,40,60,0.2);
+  border-radius: 10px;
+}
+#results::-webkit-scrollbar-thumb {
+  background: #6f9fff;
+  border-radius: 10px;
+}
 
-    .result-item img {
-      width: 60px;
-      height: 60px;
-      border-radius: 12px;
-      object-fit: contain;
-      flex-shrink: 0;
-      border: 2px solid #6f9fff;
-    }
+.result-item {
+  background-color: #1e1e38;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 15px;
+  text-align: left;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(50, 60, 110, 0.5);
+  transition: background-color 0.25s ease;
+}
 
-    .result-details {
-      flex: 1;
-      color: #cbd5f7;
-      font-size: 0.9rem;
-      line-height: 1.3;
-    }
+.result-item:hover {
+  background-color: #2e2e57;
+}
 
-    .result-details strong {
-      color: white;
-      font-size: 1.1rem;
-      display: block;
-      margin-bottom: 4px;
-      user-select: text;
-    }
+.result-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border: 2px solid #6f9fff;
+}
 
-    .result-details em {
-      font-style: normal;
-      color: #9aa7ce;
-      font-weight: 600;
-      display: block;
-      margin-bottom: 6px;
-      user-select: text;
-    }
+.result-details {
+  flex: 1;
+  color: #cbd5f7;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
 
-    .result-details span {
-      display: inline-block;
-      margin-right: 12px;
-      user-select: text;
-      color: #b0b7d7;
-    }
+.result-details strong {
+  color: white;
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 4px;
+  user-select: text;
+}
 
-    p.no-results {
-      color: #aaa;
-      font-style: italic;
-      margin-top: 30px;
-      user-select: none;
-    }
+.result-details em {
+  font-style: normal;
+  color: #9aa7ce;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  user-select: text;
+}
 
+.result-details span {
+  display: inline-block;
+  margin-right: 12px;
+  user-select: text;
+  color: #b0b7d7;
+}
+
+p.no-results {
+  color: #aaa;
+  font-style: italic;
+  margin-top: 30px;
+  user-select: none;
+}
+
+.suggestions {
+  position: absolute;
+  width: 100%;
+  background: #2a2a3a;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 10;
+}
+.suggestions div {
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #cbd5f7;
+}
+.suggestions div:hover {
+  background: #394170;
+}
   </style>
 </head>
 <body>
@@ -170,11 +188,12 @@ body {
       type="text"
       id="query"
       placeholder="Enter item name..."
-      oninput="searchItems()"
+      oninput="searchItems(); showSuggestions();"
       aria-label="Search items"
       autocomplete="off"
       spellcheck="false"
     />
+    <div id="suggestions" class="suggestions"></div>
     <select id="categoryFilter" onchange="searchItems()" aria-label="Filter by category">
       <option value="all">All Items</option>
       <option value="weapons">Weapons Only</option>
@@ -204,65 +223,123 @@ body {
       }
     }
 
-let debounceTimeout;
+    let debounceTimeout;
 
-function searchItems() {
-  clearTimeout(debounceTimeout);
-  debounceTimeout = setTimeout(() => {
-    const query = document.getElementById("query").value.toLowerCase().trim();
-    const category = document.getElementById("categoryFilter").value;
-    const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = "";
+    function searchItems() {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        const query = document.getElementById("query").value.toLowerCase().trim();
+        const category = document.getElementById("categoryFilter").value;
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "";
 
-    if (query.length < 1) return;
+        if (query.length < 1) return;
 
-    const filteredCategories = category === "all" ? Object.keys(data) : [category];
+        const filteredCategories = category === "all" ? Object.keys(data) : [category];
 
-    let foundResults = false;
-    const fragment = document.createDocumentFragment();
-    const maxResults = 50;
-    let resultCount = 0;
+        let foundResults = false;
+        const fragment = document.createDocumentFragment();
+        const maxResults = 50;
+        let resultCount = 0;
 
-    for (const categoryKey of filteredCategories) {
-      if (!data[categoryKey]) continue;
-      const items = Object.values(data[categoryKey]);
-      for (const item of items) {
-        if (!item._lowerName) {
-          item._lowerName = item.name.toLowerCase();
+        for (const categoryKey of filteredCategories) {
+          if (!data[categoryKey]) continue;
+          const items = Object.values(data[categoryKey]);
+          for (const item of items) {
+            if (!item._lowerName) {
+              item._lowerName = item.name.toLowerCase();
+            }
+            if (item._lowerName.includes(query)) {
+              foundResults = true;
+              resultCount++;
+
+              const div = document.createElement("div");
+              div.className = "result-item";
+              div.innerHTML = `
+                <img src="${item.icon}" alt="${item.name}">
+                <div class="result-details">
+                  <strong>${item.name}</strong>
+                  <span>Model ID: ${item.model || 'Unknown'}</span>
+                  <span>Index ID: ${item.index || 'Unknown'}</span>
+                </div>
+              `;
+              fragment.appendChild(div);
+
+              if (resultCount >= maxResults) break;
+            }
+          }
+          if (resultCount >= maxResults) break;
         }
-        if (item._lowerName.includes(query)) {
-          foundResults = true;
-          resultCount++;
 
-          const div = document.createElement("div");
-          div.className = "result-item";
-          div.innerHTML = `
-            <img src="${item.icon}" alt="${item.name}"><br>
-            <strong>${item.name}</strong><br>  
-            <span>Model ID: ${item.model || 'Unknown'}</span><br>
-            <span>Index ID: ${item.index || 'Unknown'}</span><br>
-          `;
-          fragment.appendChild(div);
-
-          if (resultCount >= maxResults) break; 
+        if (foundResults) {
+          resultsDiv.appendChild(fragment);
+          if (resultCount >= maxResults) {
+            const moreMsg = document.createElement("p");
+            moreMsg.style.fontStyle = "italic";
+            moreMsg.textContent = `Showing first ${maxResults} results. Narrow your search for more specific results.`;
+            resultsDiv.appendChild(moreMsg);
+          }
+        } else {
+          resultsDiv.innerHTML = `<p>No results found for "${query}".</p>`;
         }
-      }
-      if (resultCount >= maxResults) break;
+      }, 250);
     }
 
-    if (foundResults) {
-      resultsDiv.appendChild(fragment);
-      if (resultCount >= maxResults) {
-        const moreMsg = document.createElement("p");
-        moreMsg.style.fontStyle = "italic";
-        moreMsg.textContent = `Showing first ${maxResults} results. Narrow your search for more specific results.`;
-        resultsDiv.appendChild(moreMsg);
+    function showSuggestions() {
+      const input = document.getElementById("query");
+      const query = input.value.toLowerCase().trim();
+      const category = document.getElementById("categoryFilter").value;
+      const suggestionBox = document.getElementById("suggestions");
+      suggestionBox.innerHTML = "";
+
+      if (!query || query.length < 2) {
+        suggestionBox.style.display = "none";
+        return;
       }
-    } else {
-      resultsDiv.innerHTML = `<p>No results found for "${query}".</p>`;
+
+      const filteredCategories = category === "all" ? Object.keys(data) : [category];
+      const suggestions = new Set();
+
+      for (const categoryKey of filteredCategories) {
+        if (!data[categoryKey]) continue;
+        const items = Object.values(data[categoryKey]);
+
+        for (const item of items) {
+          const name = item.name.toLowerCase();
+          if (name.includes(query)) {
+            suggestions.add(item.name);
+            if (suggestions.size >= 5) break;
+          }
+        }
+
+        if (suggestions.size >= 5) break;
+      }
+
+      if (suggestions.size === 0) {
+        suggestionBox.style.display = "none";
+        return;
+      }
+
+      suggestionBox.style.display = "block";
+
+      [...suggestions].forEach(name => {
+        const div = document.createElement("div");
+        div.textContent = name;
+        div.onclick = () => {
+          input.value = name;
+          suggestionBox.style.display = "none";
+          searchItems();
+        };
+        suggestionBox.appendChild(div);
+      });
     }
-  }, 250);
-}
+
+    document.addEventListener("click", function (e) {
+      const suggestionBox = document.getElementById("suggestions");
+      if (!document.getElementById("query").contains(e.target)) {
+        suggestionBox.style.display = "none";
+      }
+    });
 
     fetchData();
   </script>
